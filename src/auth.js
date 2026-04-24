@@ -16,11 +16,12 @@ var conn;
 const stateNetwork = van.state('Offline');
 const isLogin = van.state(false);
 const userName = van.state('Guest');
+const isAutoLogin = van.state(JSON.parse(localStorage.getItem('autoLogin') ?? false));
 
 const keycloak = new Keycloak({
-    url: "http://localhost:8080",
-    realm: "myrealm",
-    clientId: "spacetimedb-app"
+    url: "http://localhost:8080", // < keycloak dev server >
+    realm: "myrealm",             // < name realm >
+    clientId: "spacetimedb-app"   // client name app.
 });
 
 async function login(){
@@ -45,8 +46,10 @@ async function login(){
       console.error('Failed to initialize adapter:', error);
   }
 }
+if(isAutoLogin.val){
+  login();
+}
 
-// login();
 
 function connectToSpacetime(token){
   conn = DbConnection.builder()
@@ -112,13 +115,24 @@ async function onSignup(){
   }
 }
 
+function toggleAutoLogin(e){
+  isAutoLogin.val = e.target.checked
+  localStorage.setItem('autoLogin', isAutoLogin.val)
+}
+
 function App(){
   return div(
     div(label("Network:"),label(stateNetwork)),
+    div(
+      input({type: "checkbox", checked: isAutoLogin, onclick:toggleAutoLogin}),
+      label("Auto Login: "),
+      () =>  isAutoLogin.val ? "✅ Active" : "❌ Inactive"
+    ),
     accessEL,
     div(
       label("User Name:"), label(userName)
-    )
+    ),
+    
   )
 }
 

@@ -26,13 +26,14 @@
 
 - https://spacetimedb.com/docs/core-concepts/authentication/usage
 
-
+## server
 ```ts
 export const onConnect = spacetimedb.clientConnected(ctx => {
   const jwt = ctx.senderAuth.jwt;
   if (jwt == null) {
     throw new SenderError('Unauthorized: JWT is required to connect');
   }
+  // http://< keycloak dev server >/realms/< name realm >
   if(jwt?.issuer =='http://localhost:8080/realms/myrealm'){
     //process data here
     // check  user data if exist if not create data.
@@ -41,6 +42,14 @@ export const onConnect = spacetimedb.clientConnected(ctx => {
     throw new SenderError('Auth Failed');
   }
 })
+```
+## client:
+```js
+const keycloak = new Keycloak({
+    url: "http://localhost:8080", // < keycloak dev server >
+    realm: "myrealm",             // < name realm >
+    clientId: "spacetimedb-app"   // client name app.
+});
 ```
 
 ## Can be found in:
@@ -134,6 +143,10 @@ spacetime dev --server local
 # sql:
 ```
 spacetime sql --server local spacetime-app-keycloak "SELECT * FROM users"
+```
+
+```
+spacetime sql --server local spacetime-app-keycloak "SELECT * FROM sessions"
 ```
 
 # Delete

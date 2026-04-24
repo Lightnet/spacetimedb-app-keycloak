@@ -4,7 +4,6 @@
 import { schema, table, t, SenderError  } from 'spacetimedb/server';
 import { sessions } from './tables/table_session';
 import { users } from './tables/table_user';
-
 //-----------------------------------------------
 // SCEHEMA
 //-----------------------------------------------
@@ -27,24 +26,27 @@ export const init = spacetimedb.init(async (_ctx) => {
 export const onConnect = spacetimedb.clientConnected(ctx => {
   // ctx.connectionId is guaranteed to be defined
   const connId = ctx.connectionId!;
-
-  console.log("jwt");
+  // console.log("jwt");
   const jwt = ctx.senderAuth.jwt;
   // console.log(jwt);
-
-  console.log(jwt?.fullPayload);
-  console.log(jwt?.subject);
-  console.log(jwt?.issuer);
+  // console.log("==============================================");
+  // console.log(jwt?.fullPayload);
+  // console.log(jwt);
+  // console.log("==============================================");
+  // console.log(jwt?.subject);
+  // console.log(jwt?.issuer);
   if(!jwt) new SenderError('Auth Failed');
-
+  // this for keycloak url for cert.
+  // http://< keycloak dev server >/realms/< name realm >
   if(jwt?.issuer =='http://localhost:8080/realms/myrealm'){
     console.log("username: ",jwt.fullPayload?.preferred_username)
-    if(jwt.fullPayload?.preferred_username){
+    if(jwt.fullPayload?.preferred_username){// json
       let userName = String(jwt.fullPayload.preferred_username);
       let user = ctx.db.users.name.find(userName);
       // console.log("user:", user);
       // if does not exist create
       if(!user){
+        // this will return user data from create
         user = ctx.db.users.insert({
           userId: ctx.newUuidV7().toString(),
           identity: ctx.sender,
@@ -63,6 +65,8 @@ export const onConnect = spacetimedb.clientConnected(ctx => {
         connected_at: ctx.timestamp,
         userId: user.userId
       });
+    }else{
+      throw new SenderError('issuer Failed');  
     }
   }else{
     throw new SenderError('Auth Failed');
@@ -73,7 +77,6 @@ export const onConnect = spacetimedb.clientConnected(ctx => {
 //-----------------------------------------------
 export const onDisconnect = spacetimedb.clientDisconnected(ctx => {
   const connId = ctx.connectionId!;
-
   const session = ctx.db.sessions.connection_id.find(connId);
   if(session){
     if(session.userId){

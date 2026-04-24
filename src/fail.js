@@ -17,7 +17,7 @@ function connectToSpacetime(){
   conn = DbConnection.builder()
     .withUri(HOST)
     .withDatabaseName(DB_NAME)
-    .withToken(null) // Use the Keycloak ID Token here
+    .withToken(null) // Use the Keycloak ID Token here, default create token by spacetimedb.
     .onConnect((conn, identity) => {
       console.log("Connected as identity:", identity.toHexString());
       stateNetwork.val = "Connect";
@@ -34,8 +34,6 @@ function connectToSpacetime(){
     .onConnectError((_ctx, error) => {
       console.error('Connection error:', error);
       stateNetwork.val = 'Connection error';
-      // statusEl.textContent = 'Error: ' + error.message;
-      // statusEl.style.color = 'red';
     })
     .build();
 }
