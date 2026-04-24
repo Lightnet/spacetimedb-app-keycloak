@@ -16,11 +16,11 @@
 # Authentication:
   There are couple of way to authentication access due to restricted sandbox webassembly. By using the third party auth packages. It use OpenID Connect (OIDC) identity tokens for authentication.
 
-  How does it work. Auth Keycloak required to setup certificate. Like those https certificate. But since testing in dev so we don't need. As well set up account to access SpaceTimeDB.
+  How does it work. Auth Keycloak required to setup certificate. Like those https certificate. But since testing in dev so we don't need it. Still need to set up account to access SpaceTimeDB application.
 
-  SpaceTimeDB has it own jwt and certificate which it need to hand shake.
+  SpaceTimeDB has it own jwt and certificate which it need to hand shake that support OIDC.
 
-  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token once login and pass to web socket to auth checks. ONce the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server.
+  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token once login and pass to web socket to auth checks. Once the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server.
 
   The server module can filter out the jwt.
 
