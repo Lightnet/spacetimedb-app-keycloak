@@ -20,7 +20,7 @@
 
   SpaceTimeDB has it own jwt and certificate which it need to hand shake that support OIDC.
 
-  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token once login and pass to web socket to auth checks. Once the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server.
+  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token once login and pass to web socket to auth checks. Once the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server. Once the SpaceTimeDB hand shake with Keycloak. It would allow user to access the application else there will be reject. One is expire date and other is revoke access.
 
   The server module can filter out the jwt.
 
