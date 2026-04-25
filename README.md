@@ -16,13 +16,15 @@
 # Authentication:
   There are couple of way to authentication access due to restricted sandbox webassembly. By using the third party auth packages. It use OpenID Connect (OIDC) identity tokens for authentication.
 
-  How does it work. Auth Keycloak required to setup certificate. Like those https certificate. But since testing in dev so we don't need it. Still need to set up account to access SpaceTimeDB application.
+  How does it work. Auth Keycloak required to setup OIDC. Like those https certificate. But since testing in dev so we don't need it. Still it need to set up account and application do do hand shake to access SpaceTimeDB application for OIDC.
 
-  SpaceTimeDB has it own jwt and certificate which it need to hand shake that support OIDC.
+  SpaceTimeDB OIDC which use hand shake with Keycloak OIDC.
 
-  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token once login and pass to web socket to auth checks. Once the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server. Once the SpaceTimeDB hand shake with Keycloak. It would allow user to access the application else there will be reject. One is expire date and other is revoke access.
+  Once the user login or register by proxy site that SpaceTimeDB server module script to allow. It would need jwt token (OIDC) once login and pass to web socket to auth checks. Once the jwt token is pass to SpaceTimeDB server it would check the token who made and send request to the keycloak server. Once the SpaceTimeDB hand shake with Keycloak. It would allow user to access the application else there will be reject. One is expire date and other is revoke access.
 
   The server module can filter out the jwt.
+
+  The reason is prevent unauthorized access as well reject connection. Due to how sandbox that anyone can access and there no disconnect feature only on first time connection to the server to be kick if not auth. But with the auth it can reject normal token vs cert token by third party. It to prevent spam in some degree. Since it use web socket.
 
 - https://spacetimedb.com/docs/core-concepts/authentication/usage
 
