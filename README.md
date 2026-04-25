@@ -6,7 +6,7 @@
  - 2.1.0
 
 # Information:
-  This is auth for keycloak project with some basic sample tests. This use Podman.
+  This is auth for keycloak package and auth server for this project with some basic sample tests to handshake SpaceTimeDB OIDC. This use Podman.
 
 - https://github.com/keycloak/keycloak
 
